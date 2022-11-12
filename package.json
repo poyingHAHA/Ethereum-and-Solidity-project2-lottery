@@ -1,0 +1,20 @@
+{
+  "name": "inbox_updated",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^2.1.1",
+    "dotenv": "^16.0.3",
+    "ganache-cli": "^6.12.2",
+    "mocha": "^10.1.0",
+    "solc": "^0.8.9",
+    "web3": "^1.8.1"
+  }
+}
