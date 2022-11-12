@@ -31,7 +31,7 @@ describe('Lottery Contract', () => {
 
         assert.equal(accounts[0], players[0]);
         assert.equal(1, players.length);
-    })
+    });
 
     it('allows multiple accounts to enter', async () => {
         await lottery.methods.enter().send({
@@ -57,5 +57,18 @@ describe('Lottery Contract', () => {
         assert.equal(accounts[1], players[1]);
         assert.equal(accounts[2], players[2]);
         assert.equal(3, players.length);
-    })
+    });
+
+    it('requires a minimun amount of ether to enter', async() => {
+        try{
+            await lottery.methods.enter().send({
+                from: accounts[0],
+                value: 0
+            });
+            assert(false); // this is always going to fail our test
+        }catch(err){
+            // When we use assert, we're going to check for truthiness, unlike ok which checks for existence.
+            assert(err); // Because the value is too less, it's going to throw error
+        }
+    });
 });
