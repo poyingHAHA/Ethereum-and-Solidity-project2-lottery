@@ -82,4 +82,26 @@ describe('Lottery Contract', () => {
             assert(err);
         }
     });
+
+    it('sends money to the winner and resets the players array', async() => {
+        await lottery.methods.enter().send({
+            from: accounts[0], 
+            value: web3.utils.toWei('2', 'ether')
+        });
+
+        // essentially you throw any address you want into this function and it will return the amount of ether that is assigned to that address.
+        // In this case, we want to get the amount of ether that is controlled by accounts at zero.
+        const initialBalance = await web3.eth.getBalance(accounts[0]);
+        await lottery.methods.pickWinner().send({ from: accounts[0] })
+        const finalBalance = await web3.eth.getBalance(accounts[0]);
+        // you might be thinking that the difference between these two balances right here is going to be exactly two ether.
+        // recall that any time we send a transaction into the network, we have to pay some amount of money in gas to get that transaction to be processed by the network.
+        // so in reality it's going to be slightly less than two ether. 
+        // Now it's going to be really challenging for us to compute the amount of ether that we just spent on gas.
+        const difference = finalBalance - initialBalance;
+        // Well, basically, the 1.8 is just allowing for some amount of gas cost.
+        // It's saying we acknowledge that the difference between these two things will be around two ether, but
+        // it'll be slightly less because we just spent some amount of money on gas.
+        assert(difference > web3.utils.toWei('1.8', 'ether'));
+    });
 });
